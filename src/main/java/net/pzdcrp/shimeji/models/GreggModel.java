@@ -25,14 +25,9 @@ public class GreggModel extends Model {
 	public GreggModel(World world) {
 		super("imgs/gregg/", world);
 	}
-	
-	@Override
-	public void tick() {
-		super.tick();
-		
-		
-		
-		//GameU.log("kd: "+nextbehaviorkd+" beh: "+behavior.toString()+" pos: "+x+" "+y+" d:"+deltaTime());
-	}
 
+	@Override
+	public int getid() {
+		return 1;
+	}
 }

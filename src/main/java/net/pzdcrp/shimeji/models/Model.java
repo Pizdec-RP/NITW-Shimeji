@@ -67,10 +67,6 @@ public class Model {
 	private Thread tickthread;
 	
 	public static int modelwidth = (int)(128*scale), halfmodelwidth = modelwidth/2, oneandhalf = modelwidth+halfmodelwidth;
-    
-    /*public enum Behavior {
-    	stand, walk, fall, layFromFall, sit, sleepy, lay, sleep, run, rage, borred, standlookup, walktopos
-    }*/
 	
 	public void kill() {
 		tickthread.interrupt();
@@ -174,6 +170,7 @@ public class Model {
             public void mousePressed(MouseEvent e) {
             	if (beh.captureDrag()) return;
             	if (e.getButton() == 1) {
+            		dragcounter+=2;
 	                mouseX = e.getX();
 	                mouseY = e.getY();
 	                dragged = true;
@@ -188,14 +185,10 @@ public class Model {
 	    
 	    frame.setContentPane(imageComponent);
 	    
-	    //---------------------------------
-	    
-	    setButtons();
-	    
-	    //---------------------------------
+	    if (Main.debug) setButtons();
 	    
 	    x = MathU.rndi(200, world.screenwidth-200);
-	    y = world.screenheight-100;
+	    y = world.screenheight-(modelwidth*2);
 	    
 	    frame.setVisible(true);
 	    
@@ -295,6 +288,7 @@ public class Model {
 		    	img.setBackground(new Color(0,0,0,0));*/
 		    	String[] splited = fn.split("_");
 		    	String type = splited[0];
+		    	//GameU.log(fn);
 		    	int id = Integer.parseInt(splited[1]
 		    			.split("\\.")[0]);
 		    	if (!getFrames().containsKey(type)) {
@@ -334,7 +328,6 @@ public class Model {
 	
 	long beforetime = System.currentTimeMillis();
 	long now;
-	public boolean onGround = false, dragged = false;
 	public long deltaTime() {
 		now = System.currentTimeMillis();
 		long i = now - beforetime;
@@ -381,14 +374,14 @@ public class Model {
 	        		nb.remove(b);
 	        	}
 	        }
-	        boolean wasMovingDown = vely < 0, colx = false;
-	        float bx;
+	        boolean wasMovingDown = vely < 0, colx = false, coly = false;
+	        float bx, by;
 	        for (AABB collidedBB : nb) {
-	        	
+	        	by = vely;
 	            vely = collidedBB.calculateYOffset(this.getHitbox(), vely);
-	            /*if (by != vely) {
+	            if (by != vely) {
 	                coly = true;
-	            }*/
+	            }
 	        }
 	        
 	        if (wasMovingDown && vely == 0) {
@@ -408,9 +401,8 @@ public class Model {
 	            }
 	        }
 	        
-	        if (colx) {
-	        	swingdirection();
-	        }
+	        this.colx = colx;
+	        this.coly = coly;
 	        
 	        this.x += velx;
 	        
@@ -430,26 +422,78 @@ public class Model {
 	private boolean increasing = true;*/
 	public int dragcounter = 0;
 	private JPopupMenu popupMenu;
+	public boolean onGround = false, dragged = false, colx = false, coly = false;
 	public void tick() {
 		//GameU.log("drag count: "+dragcounter);
 		//user32.SetWindowPos(hwnd, new WinDef.HWND(Pointer.NULL), 0, 0, 0, 0, WinUser.SWP_NOMOVE | WinUser.SWP_NOSIZE | WinUser.SWP_NOZORDER | WinUser.SWP_SHOWWINDOW | WinUser.SWP_NOACTIVATE);
+		frame.setSize(modelwidth, modelwidth);
 		
-		if (popupMenu.isVisible()) return;
+		if (popupMenu != null && popupMenu.isVisible()) return;
 		
 		if (dragged && !beh.captureDrag()) {
 			if (!(beh instanceof Dragged)) {
 				beh = new Dragged(this);
-				dragcounter+=2;
 			}
 		} else {
-			vely -= (0.3*scale);
-			vely *= 0.9800000190734863D;
+			if (!beh.captureGravity()) {
+				vely -= (0.3*scale);
+				vely *= 0.9800000190734863D;
+			}
 			
 			applyMovement();
+			AABB wch;
+			//GameU.log(beh.getClass().getName());
 			
-			if (!onGround && !beh.captureFall()) {
-				if (!(beh instanceof Fall)) {
-					beh = new Fall(this);
+			//приоритет на зацепку за стену, потоm за потолок
+			boolean captwall = beh instanceof Climbwall;
+			
+			if (colx && !captwall) {
+				if (MathU.rndi(0, 5) == 0) {
+					wch = getHitbox().grow(10, 0);
+				} else {
+					swingdirection();
+					wch = getHitbox();
+				}
+				coly = false;
+	        } else {
+	        	wch = getHitbox();
+	        }
+			
+			if (!captwall) {
+				for (AABB wall : world.walls) {
+					if (wall.id == this.ignoredbb) continue;
+					if (wall.collide(wch)) {
+						
+						captwall = true;
+						if (wch.getCenterX() >= wall.getCenterX()) {//capt right side of wall
+							GameU.log("true -1");
+							direction = -1;//face on wall
+							beh = new Climbwall(this, wall, true);
+						} else {//left
+							GameU.log("true 1");
+							direction = 1;
+							beh = new Climbwall(this, wall, true);
+						}
+					}
+				}
+			}
+			
+			if (captwall) {
+				if (world.roof.collide(getHitbox())) {
+					if (!(beh instanceof Holdontop)) {
+						beh = new Holdontop(this, true);
+						swingdirection();
+					}
+				}
+			} else if (world.roof.collide(getHitbox())) {
+				if (!(beh instanceof Holdontop)) {
+					beh = new Holdontop(this);
+				}
+			} else {
+				if (!onGround && !beh.captureFall()) {
+					if (!(beh instanceof Fall)) {
+						beh = new Fall(this);
+					}
 				}
 			}
 			
@@ -467,12 +511,8 @@ public class Model {
 	}
 	
 	public int getid() {
-		if (source.contains("mae")) return 0;
-		else if (source.contains("gregg")) return 1;
-		else {
-			GameU.end("badid");
-			return -1;
-		}
+		GameU.end("");
+		return -1;
 	}
 	
 	public void setButtons() {

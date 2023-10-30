@@ -28,6 +28,10 @@ public class AABB {
 	    this.maxY = maxy;
 	}
 	
+	public float getCenterX() {
+		return (minX+maxX)/2;
+	}
+	
 	public AABB clone() {
 	    return new AABB(this.minX, this.minY, this.maxX, this.maxY);
 	}

@@ -38,19 +38,23 @@ public class Stand extends Behavior {
 				return new Lookup(host);
 			}
 		} else if (host.getid() == 1) {//greg
-			int rnd = MathU.rndi(0, 7);
-			if (rnd == 0) {
-				return new Sit(host);
-			} else if (rnd == 1 || rnd == 2) {
-				return new Walk(host);
-			} else if (rnd == 3 || rnd == 4) {
-				return new Run(host);
-			} else if (rnd == 5) {
-				return new Sleepy(host);
-			} else if (rnd == 6) {
-				return new GreggRage(host);
-			} else if (rnd == 7) {
-				return new Lookup(host);
+			if (MathU.rndi(0, 15) == 15) {
+				return new OutboundAdventure(host);
+			} else {
+				int rnd = MathU.rndi(0, 7);
+				if (rnd == 0) {
+					return new Sit(host);
+				} else if (rnd == 1 || rnd == 2) {
+					return new Walk(host);
+				} else if (rnd == 3 || rnd == 4) {
+					return new Run(host);
+				} else if (rnd == 5) {
+					return new Sleepy(host);
+				} else if (rnd == 6) {
+					return new GreggRage(host);
+				} else if (rnd == 7) {
+					return new Lookup(host);
+				}
 			}
 		}
 		GameU.end("nobehavior");

@@ -15,31 +15,39 @@ import net.pzdcrp.shimeji.utils.GameU;
 
 public class World {
 	public List<AABB> windowBorder = new ArrayList<>();
+	public List<AABB> walls = new ArrayList<>();
 	public List<AABB> otherwindows = new ArrayList<>();
 	public int miny, screenheight, screenwidth;
+	public AABB roof;
+	public int offset;
 
 	public World() {
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		Rectangle winSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
 		miny = dim.height - winSize.height;
-		miny -= 15;
+		offset = miny/2;
+		//GameU.log(miny);
+		miny -= offset;
 		screenheight = dim.height;
 		screenwidth = dim.width;
 		
 		AABB floor = new AABB(-999999, 0, 999999, miny);
-		//		-----------------------------
-		//		|							|
-		//		|							|
-		//==========================================
+		floor.setid(2);
 		windowBorder.add(floor);
+		
+		roof = new AABB(-999999, winSize.height+offset, 999999, 999999);
+		roof.setid(3);
+		windowBorder.add(roof);
 		
 		AABB leftborder = new AABB(-999999, -999999, 0, 999999);
 		leftborder.setid(1);
 		windowBorder.add(leftborder);
+		walls.add(leftborder);
 		
 		AABB rightborder = new AABB(screenwidth, -999999, 999999, 999999);
 		rightborder.setid(0);
 		windowBorder.add(rightborder);
+		walls.add(rightborder);
 		
 		
 		//winthread();

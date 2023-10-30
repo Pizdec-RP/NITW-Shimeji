@@ -37,12 +37,6 @@
 		    <artifactId>jna-platform</artifactId>
 		    <version>5.13.0</version>
 		</dependency>
-		<!-- https://mavenlibs.com/maven/dependency/commons-io/commons-io -->
-		<dependency>
-		    <groupId>commons-io</groupId>
-		    <artifactId>commons-io</artifactId>
-		    <version>2.13.0</version>
-		</dependency>
 		
 
 		

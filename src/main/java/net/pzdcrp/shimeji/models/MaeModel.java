@@ -23,14 +23,9 @@ public class MaeModel extends Model {
 	public MaeModel(World world) {
 		super("imgs/mae/", world);
 	}
-
-	@Override
-	public void tick() {
-		super.tick();
-		
-		
-		//GameU.log("kd: "+nextbehaviorkd+" beh: "+behavior.toString()+" pos: "+x+" "+y+" d:"+deltaTime());
-
-	}
 	
+	@Override
+	public int getid() {
+		return 0;
+	}
 }

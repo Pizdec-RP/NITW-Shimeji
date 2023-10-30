@@ -34,4 +34,8 @@ public class Behavior {
 	public int[] getDisallowed() {
 		return null;
 	}
+
+	public boolean captureGravity() {
+		return false;
+	}
 }

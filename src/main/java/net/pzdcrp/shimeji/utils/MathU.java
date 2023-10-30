@@ -310,4 +310,9 @@ public class MathU {
 	    int sqrt = (int) Math.sqrt(n);
 	    return sqrt * sqrt == n;
 	}
+
+
+	public static boolean rndb() {
+		return rndnrm()>=0.5;
+	}
 }

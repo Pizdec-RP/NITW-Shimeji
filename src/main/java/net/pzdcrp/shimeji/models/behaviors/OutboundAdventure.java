@@ -13,13 +13,19 @@ public class OutboundAdventure extends Behavior {
 	}
 	
 	private int frameindex = 0, nextframekd = 20;
-	private boolean increasing = true;
+	private boolean increasing = true, totallyended = true;
 	@Override
 	public void tick() {
 		host.ignoredbb = 1;
 		//GameU.log(host.source.replace("imgs/", "")+" "+stage);
-		//check if partner dragged
+		/*if (host.y > host.world.miny) {
+			ended = true;
+		}*/
 		if (host.getid() == 1) {//gregg
+			if (!Main.mae.onGround) {
+				ended = true;
+				totallyended = false;
+			}
 			if (stage == 0) {//walk to border
 				if (host.x >= 0 && host.x <= Model.halfmodelwidth) {
 					stage = 1;
@@ -75,7 +81,7 @@ public class OutboundAdventure extends Behavior {
 				((OutboundAdventure)Main.mae.beh).stage = 2;
 				host.setFrame("fall",0);
 				host.direction = 1;
-	            host.velx = MathU.rndi(16, 32);
+	            host.velx = MathU.rndi(16, 32) * host.direction;
 				host.vely = MathU.rndi(15, 25);
 				stage = 9;
 			} else if (stage == 6) {//climbup random
@@ -165,11 +171,19 @@ public class OutboundAdventure extends Behavior {
 		if (host.getid() == 1) {
 			host.swingdirection();
 			host.ignoredbb = -2;
-			return new LayFromFall(host);
+			if (totallyended) {
+				return new LayFromFall(host);
+			} else {
+				return new Stand(host);
+			}
 		} else if (host.getid() == 0) {
 			host.direction = 1;
 			host.ignoredbb = -2;
-			return new Sit(host);
+			if (MathU.rndb()) {
+				return new MaeBorred(host);
+			} else {
+				return new Sit(host);
+			}
 		}
 		return null;
 	}
