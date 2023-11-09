@@ -448,7 +448,7 @@ public class Model {
 			boolean captwall = beh instanceof Climbwall;
 			
 			if (colx && !captwall) {
-				if (MathU.rndi(0, 5) == 0) {
+				if (MathU.rndi(0, 8) == 0) {
 					wch = getHitbox().grow(10, 0);
 				} else {
 					swingdirection();
@@ -466,11 +466,11 @@ public class Model {
 						
 						captwall = true;
 						if (wch.getCenterX() >= wall.getCenterX()) {//capt right side of wall
-							GameU.log("true -1");
+							//GameU.log("true -1");
 							direction = -1;//face on wall
 							beh = new Climbwall(this, wall, true);
 						} else {//left
-							GameU.log("true 1");
+							//GameU.log("true 1");
 							direction = 1;
 							beh = new Climbwall(this, wall, true);
 						}

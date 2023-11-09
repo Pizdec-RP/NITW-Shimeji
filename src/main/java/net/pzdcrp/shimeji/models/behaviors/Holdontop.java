@@ -23,7 +23,7 @@ public class Holdontop extends Behavior {
 	
 	@Override
 	public void tick() {
-		if ((host.colx && !b1) || MathU.rndi(0, 200) == 55) {
+		if (host.colx && !b1) {
 			ended = true;
 		} else {
 			b1 = false;
@@ -43,6 +43,9 @@ public class Holdontop extends Behavior {
 		        
 		        if (frameindex == 1 && MathU.rndi(0, 4) == 0) {
 		        	restticks = MathU.rndi(50, 200);
+		        	if (MathU.rndi(0, 200) == 55) {
+		        		ended = true;
+		        	}
 		        }
 			}
 			host.setFrame("hold", frameindex);

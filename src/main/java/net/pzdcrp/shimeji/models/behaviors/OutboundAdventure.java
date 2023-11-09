@@ -27,7 +27,7 @@ public class OutboundAdventure extends Behavior {
 				totallyended = false;
 			}
 			if (stage == 0) {//walk to border
-				if (host.x >= 0 && host.x <= Model.halfmodelwidth) {
+				if (host.x <= Model.halfmodelwidth) {
 					stage = 1;
 					frameindex = 0;
 					nextframekd = 0;

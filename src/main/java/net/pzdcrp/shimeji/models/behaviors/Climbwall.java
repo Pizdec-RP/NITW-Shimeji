@@ -28,14 +28,14 @@ public class Climbwall extends Behavior {
 		} else {
 			host.x = wall.maxX - Model.halfmodelwidth;
 		}
-		GameU.log(host.x+" "+host.world.walls.get(1).minX);
+		//GameU.log(host.x+" "+host.world.walls.get(1).minX);
 	}
 	
 	private int frameindex = 0, nextframekd = 20, restticks = 0;
 	
 	@Override
 	public void tick() {
-		if (host.coly || MathU.rndi(0, 1000) == 55) {
+		if (host.coly) {
 			ended = true;
 		}
 		//host.onGround = false;
@@ -51,7 +51,10 @@ public class Climbwall extends Behavior {
 				else if (frameindex == 1) frameindex = 0;
 		        
 		        if (frameindex == 0) {
-		        	restticks = 50;
+		        	restticks = 30;
+		        	if (MathU.rndi(0, 700) == 55) {
+		        		ended = true;
+		        	}
 		        }
 			}
 			host.setFrame("climb", frameindex);
