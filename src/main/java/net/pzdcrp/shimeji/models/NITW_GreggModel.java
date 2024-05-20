@@ -12,7 +12,7 @@ import javax.imageio.ImageIO;
 import net.pzdcrp.shimeji.utils.GameU;
 import net.pzdcrp.shimeji.utils.MathU;
 
-public class GreggModel extends Model {
+public class NITW_GreggModel extends Model {
 	/*private static final Map<Behavior, int[]> behoffset = new HashMap<>() {{//x,y
 		//put(Behavior.sit, new int[] {0, -15});
 	}};*/
@@ -22,7 +22,7 @@ public class GreggModel extends Model {
 		return frames;
 	}
 
-	public GreggModel(World world) {
+	public NITW_GreggModel(World world) {
 		super("imgs/gregg/", world);
 	}
 

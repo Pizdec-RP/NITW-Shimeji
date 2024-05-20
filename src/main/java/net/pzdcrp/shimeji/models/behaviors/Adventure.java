@@ -6,9 +6,9 @@ import net.pzdcrp.shimeji.models.Model;
 import net.pzdcrp.shimeji.utils.GameU;
 import net.pzdcrp.shimeji.utils.MathU;
 
-public class OutboundAdventure extends Behavior {
+public class Adventure extends Behavior {
 	public int stage = 0;
-	public OutboundAdventure(Model host) {
+	public Adventure(Model host) {
 		super(host);
 	}
 	
@@ -47,7 +47,7 @@ public class OutboundAdventure extends Behavior {
 					host.velx += host.getRunSpeed();
 				}
 			} else if (stage == 1) {//call mae
-				Main.mae.setBehavior(new OutboundAdventure(Main.mae));
+				Main.mae.setBehavior(new Adventure(Main.mae));
 				host.setFrame("stand",0);
 				stage = 3;
 				host.direction = 1;
@@ -78,7 +78,7 @@ public class OutboundAdventure extends Behavior {
 					stage = 5;//MathU.rndi(5, 6);
 				}
 			} else if (stage == 5) {//throw out
-				((OutboundAdventure)Main.mae.beh).stage = 2;
+				((Adventure)Main.mae.beh).stage = 2;
 				host.setFrame("fall",0);
 				host.direction = 1;
 	            host.velx = MathU.rndi(16, 32) * host.direction;
@@ -90,7 +90,7 @@ public class OutboundAdventure extends Behavior {
 				host.setFrame("fall",0);
 				if (host.onGround) {
 					stage = 10;
-					((OutboundAdventure)Main.mae.beh).stage = 3;
+					((Adventure)Main.mae.beh).stage = 3;
 				}
 			} else if (stage == 10) {//stay fallen
 				host.setFrame("layFromFall",0);
@@ -101,7 +101,7 @@ public class OutboundAdventure extends Behavior {
 				}
 			}
 		} else if (host.getid() == 0) {
-			if (!(Main.gregg.beh instanceof OutboundAdventure)) {
+			if (!(Main.gregg.beh instanceof Adventure)) {
 				ended = true;
 			}
 			if (stage == 0) {//walk to gregg

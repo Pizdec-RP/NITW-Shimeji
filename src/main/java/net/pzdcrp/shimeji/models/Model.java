@@ -222,9 +222,6 @@ public class Model {
 	public void loadimgs() {
 		try {
 			Map<String, BufferedImage> files = new LinkedHashMap<>();
-			
-			//low-ass coding nigga there is 1:24 am, ima tired of it!
-			
 			ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 
 	        String directoryPath = source;
@@ -465,7 +462,7 @@ public class Model {
 					if (wall.collide(wch)) {
 						
 						captwall = true;
-						if (wch.getCenterX() >= wall.getCenterX()) {//capt right side of wall
+						if (wch.getCenterX() >= wall.getCenterX()) {
 							//GameU.log("true -1");
 							direction = -1;//face on wall
 							beh = new Climbwall(this, wall, true);
@@ -632,7 +629,7 @@ public class Model {
         JMenuItem obadv = new JMenuItem("outboundAdv");
         behlist.add(obadv);
         obadv.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent e) {
-        	setBehavior(new OutboundAdventure(m));
+        	setBehavior(new Adventure(m));
         }});
 	}
 }

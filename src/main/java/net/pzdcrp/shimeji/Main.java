@@ -34,8 +34,8 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 
-import net.pzdcrp.shimeji.models.GreggModel;
-import net.pzdcrp.shimeji.models.MaeModel;
+import net.pzdcrp.shimeji.models.NITW_GreggModel;
+import net.pzdcrp.shimeji.models.NITW_MaeModel;
 import net.pzdcrp.shimeji.models.Model;
 import net.pzdcrp.shimeji.models.World;
 import net.pzdcrp.shimeji.utils.GameU;
@@ -43,22 +43,18 @@ import net.pzdcrp.shimeji.utils.GameU;
 public class Main {
 	static World world;
 	public static Model mae,gregg;
-	public static final boolean debug = false;
+	public static final boolean debug = true;
 	
 	public static void main(String[] args) throws IOException {
 		if (SystemTray.isSupported()) {
             try {
-                // Создание SystemTray
                 SystemTray systemTray = SystemTray.getSystemTray();
 
-                // Загрузка иконки для трея
-                Image image = new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB).getScaledInstance(1, 1, 0);
+                Image image = new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB);
 
-                // Создание объекта TrayIcon
                 TrayIcon trayIcon = new TrayIcon(image, "Trayed");
                 trayIcon.setImageAutoSize(true);
 
-                // Создание контекстного меню
                 PopupMenu popupMenu = new PopupMenu();
                 MenuItem exitItem = new MenuItem("Выход");
                 
@@ -72,12 +68,11 @@ public class Main {
                     }
                 });
 
-                // Добавление иконки в трей
                 systemTray.add(trayIcon);
 
                 boot(args);
 
-            } catch (AWTException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
@@ -89,7 +84,7 @@ public class Main {
 	public static void boot(String[] args) {
 		GameU.log("./");
 		world = new World();
-		mae = new MaeModel(world);
-		gregg = new GreggModel(world);
+		mae = new NITW_MaeModel(world);
+		gregg = new NITW_GreggModel(world);
 	}
 }

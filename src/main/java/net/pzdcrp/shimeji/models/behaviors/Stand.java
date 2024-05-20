@@ -39,7 +39,7 @@ public class Stand extends Behavior {
 			}
 		} else if (host.getid() == 1) {//greg
 			if (MathU.rndi(0, 15) == 15) {
-				return new OutboundAdventure(host);
+				return new Adventure(host);
 			} else {
 				int rnd = MathU.rndi(0, 7);
 				if (rnd == 0) {

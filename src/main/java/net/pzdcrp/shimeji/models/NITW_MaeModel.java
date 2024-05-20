@@ -12,7 +12,7 @@ import javax.imageio.ImageIO;
 import net.pzdcrp.shimeji.utils.GameU;
 import net.pzdcrp.shimeji.utils.MathU;
 
-public class MaeModel extends Model {
+public class NITW_MaeModel extends Model {
 	
 	
 	@Override
@@ -20,7 +20,7 @@ public class MaeModel extends Model {
 		return frames;
 	}
 
-	public MaeModel(World world) {
+	public NITW_MaeModel(World world) {
 		super("imgs/mae/", world);
 	}
 	
