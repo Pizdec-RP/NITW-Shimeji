@@ -2,6 +2,8 @@
 
 shimeji по игре Night in the woods
 
+![Demo pic](image/demo.png)
+
 просто Мей и Грегг бегающие по твоему рабочему столу
 
 ## фичерс
@@ -17,5 +19,3 @@ shimeji по игре Night in the woods
 к сожалению не умеют взаимодействовать с окнами
 
 лето 2023 было крайне скучным
-
-![Demo pic](image/demo.png)
